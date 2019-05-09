@@ -1,5 +1,3 @@
-import { getActivePlayer } from "./setFields";
-
 var GameStats = {
     player1: {
         ships: {
@@ -172,35 +170,45 @@ export function drawShips(player) {
             const locations = ship.fields;
             locations.forEach((cord) => {
                 const field = map.querySelector(`.field[data-id="${cord.toString()}"]`);
+                
                 field.style.backgroundColor = "green";
             });
         })
     });
 }
 
+import { shoot } from './gamePlay';
 export function drawShots(player) {
-    let shots;
+    console.log(player);
     if(player == 'player1') {
-        shots = GameStats.player1.attacks;
+        var shots = GameStats.player1.attacks;
     } else {
-        shots = GameStats.player2.attacks;
+        var shots = GameStats.player2.attacks;
     }
     const map = document.querySelectorAll('.map')[1];
 
-    [...map.children].splice(1).forEach((field) => field.style.backgroundColor = "");
+    [...map.children].splice(1).forEach((field) => {
+        field.style.backgroundColor = "";
+        field.addEventListener('click', shoot);
+    });
 
-    const {hits, missHits, destroyed} = shots;
+    const { hits, missHits, destroyed } = shots;
+    console.log(hits);
+    console.log(destroyed);
     hits.forEach((hit) => {
         const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
         field.style.backgroundColor = "red";
+        field.removeEventListener('click', shoot);
     });
     missHits.forEach((hit) => {
         const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
         field.style.backgroundColor = "blue";
+        field.removeEventListener('click', shoot);
     });
     destroyed.forEach((hit) => {
         const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
         field.style.backgroundColor = "black";
+        field.removeEventListener('click', shoot);
     });
 }
 
@@ -218,25 +226,25 @@ export function addShot(player, cord) {
     let value = false;
     types.forEach((type) => {
         type.forEach((ship) => {
-            const index = ship.fields.indexOf(cord);
-            if(index > -1) {
-                ship.hits.push('hit');
-                attacks.hits.push(cord);
-                console.log("pushuje hita");
-                if(ship.hits.filter((hit) => hit == 'hit').length >= ship.fields.length) {
-                    ship.fields.forEach((field) => {
-                        const number = attacks.hits.indexOf(field);
-                        attacks.hits.splice(number, number);
-                        attacks.destroyed.push(field);
-                    });
+            if(!value) {
+                const index = ship.fields.indexOf(cord);
+                if(index > -1) {
+                    ship.hits.push('hit');
+                    attacks.hits.push(cord);
+                    if(ship.hits.filter((hit) => hit == 'hit').length >= ship.fields.length) {
+                        ship.fields.forEach((field) => {
+                            attacks.destroyed.push(field);
+                        })
+                    }
+                    value = true;
                 }
-                value = true;
-            } else {
-                attacks.missHits.push(cord);
-                console.log("pushuje missa");
             }
         });
     });
+    if(!value) {
+        attacks.missHits.push(cord);
+    }
+    console.log(GameStats);
     return value;
 }
 

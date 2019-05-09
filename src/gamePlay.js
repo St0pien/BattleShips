@@ -29,12 +29,11 @@ export function startGameplay() {
     drawShots(activePlayer);
 }
 
-function shoot() {
+export function shoot() {
     if(addShot(activePlayer, Number(this.dataset.id))) {
-        console.log("odbieram prawda");
-        drawShots();
+        console.log("nie wiem");
+        drawShots(activePlayer);
     } else {
-        console.log("odbieram fałsz");
         if(activePlayer == 'player1') {
             activePlayer = 'player2';
             document.querySelector('h3').innerHTML = "turn: PLAYER 2";
