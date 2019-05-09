@@ -66,22 +66,12 @@ export function changeRotation(ship) {
         changed = true;
     }
 
-    if(ship.dataset.rotation == "vertical") {
-        ship.dataset.rotation = "horizontal";
-        ship.style.width = `${40*Number(ship.dataset.fields)}px`;
-        ship.style.height = '40px';
-    } else {
-        ship.dataset.rotation = "vertical";
-        ship.style.height = `${40*Number(ship.dataset.fields)}px`;
-        ship.style.width = '40px';
-    }
-
     if(changed) {
         const type = ship.dataset.fields;
         let cords = [];
         const id = ship.parentNode.dataset.id;
 
-        if(ship.dataset.rotation == "vertical") {
+        if(ship.dataset.rotation == "horizontal") {
             for(let i=0; i<type; i++) {
                 if(Number(id)+i*10 > 99) {
                     console.log("błąd");
@@ -97,7 +87,21 @@ export function changeRotation(ship) {
                 cords.push(Number(id) + i);
             }
         }
-        placeShip(getActivePlayer(), type, cords, ship, ship.parentNode);
+        if(checkShip(getActivePlayer(), cords) != false) {
+            placeShip(getActivePlayer(), type, cords, ship, ship.parentNode);
+        } else {
+            return;
+        }
+    }
+
+    if(ship.dataset.rotation == "vertical") {
+        ship.dataset.rotation = "horizontal";
+        ship.style.width = `${40*Number(ship.dataset.fields)}px`;
+        ship.style.height = '40px';
+    } else {
+        ship.dataset.rotation = "vertical";
+        ship.style.height = `${40*Number(ship.dataset.fields)}px`;
+        ship.style.width = '40px';
     }
 }
 
