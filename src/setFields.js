@@ -26,6 +26,7 @@ export function setFields() {
 
 import { getDragItem, changeRotation } from './setShips';
 import { placeShip, restoreShip } from './ships';
+import { startGameplay } from './gamePlay';
 var activePlayer = 'player1';
 
 function nextPlayer() {
@@ -39,6 +40,7 @@ function nextPlayer() {
     if(container.children.length <= 0) {
         if(activePlayer == 'player1') {
             activePlayer = 'player2';
+            document.querySelector('h3').innerHTML = "turn: PLAYER 2";
             let ships = [...document.querySelectorAll('.ship')];
             ships.sort((a, b) => {
                 return Number(a.dataset.fields) - Number(b.dataset.fields)
@@ -49,6 +51,11 @@ function nextPlayer() {
                 }
                 container.appendChild(ship);
             });
+        } else {
+            activePlayer = 'player1';
+            const button = document.querySelector('.button');
+            button.removeEventListener('click', nextPlayer);
+            startGameplay();
         }
     } else {
         header.innerHTML = "Place them ALL";

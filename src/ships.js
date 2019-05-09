@@ -12,6 +12,7 @@ var GameStats = {
         attacks: {
             hits: [],
             missHits: [],
+            destroyed: []
         }
     },
     
@@ -26,6 +27,7 @@ var GameStats = {
         attacks: {
             hits: [],
             missHits: [],
+            destroyed: []
         }
     }
 }
@@ -62,10 +64,10 @@ export function checkShip(player, cords) {
                     if(location == cord) {
                         ok = false;
                     }
-                    if(location+1 == cord) {
+                    if(location+1 == cord && location != 9 && location.toString().charAt(1) != '9') {
                         ok = false;
                     }
-                    if(location-1 == cord) {
+                    if(location-1 == cord && location != 0 && location.toString().charAt(1) != '0') {
                         ok = false;
                     }
                     if(location+10 == cord) {
@@ -74,7 +76,7 @@ export function checkShip(player, cords) {
                     if(location-10 == cord) {
                         ok = false;
                     }
-                    if(location+11 == cord) {
+                    if(location+11 == cord && location != 9 && location.toString().charAt(1) != '9') {
                         ok = false;
                     }
                     if(location+9 == cord && location != 0 && location.toString().charAt(1) != '0') {
@@ -83,7 +85,7 @@ export function checkShip(player, cords) {
                     if(location-9 == cord && location != 9 && location.toString().charAt(1) != '9') {
                         ok = false;
                     }
-                    if(location-11 == cord) {
+                    if(location-11 == cord && location != 0 && location.toString().charAt(1) != '0') {
                         ok = false;
                     }
                     return ok;
@@ -151,6 +153,91 @@ export function restoreShip(player, type, ship) {
         }
         placeShip(player, type, cords, ship, ship.parentNode);
     }
+}
+
+export function drawShips(player) {
+    let ships;
+    if(player == 'player1') {
+        ships = GameStats.player1.ships;
+    } else {
+        ships = GameStats.player2.ships;
+    }
+    const types = [ships.ones, ships.twos, ships.threes, ships.fours];
+    const map = document.querySelector('.map');
+
+    [...map.children].splice(1).forEach((field) => field.style.backgroundColor = "");
+
+    types.forEach((type) => {
+        type.forEach((ship) => {
+            const locations = ship.fields;
+            locations.forEach((cord) => {
+                const field = map.querySelector(`.field[data-id="${cord.toString()}"]`);
+                field.style.backgroundColor = "green";
+            });
+        })
+    });
+}
+
+export function drawShots(player) {
+    let shots;
+    if(player == 'player1') {
+        shots = GameStats.player1.attacks;
+    } else {
+        shots = GameStats.player2.attacks;
+    }
+    const map = document.querySelectorAll('.map')[1];
+
+    [...map.children].splice(1).forEach((field) => field.style.backgroundColor = "");
+
+    const {hits, missHits, destroyed} = shots;
+    hits.forEach((hit) => {
+        const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
+        field.style.backgroundColor = "red";
+    });
+    missHits.forEach((hit) => {
+        const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
+        field.style.backgroundColor = "blue";
+    });
+    destroyed.forEach((hit) => {
+        const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
+        field.style.backgroundColor = "black";
+    });
+}
+
+export function addShot(player, cord) {
+    let ships;
+    let attacks;
+    if(player == "player1") {
+        ships = GameStats.player2.ships;
+        attacks = GameStats.player1.attacks;
+    } else {
+        ships = GameStats.player1.ships;
+        attacks = GameStats.player2.attacks;
+    }
+    let types = [ships.ones, ships.twos, ships.threes, ships.fours];
+    let value = false;
+    types.forEach((type) => {
+        type.forEach((ship) => {
+            const index = ship.fields.indexOf(cord);
+            if(index > -1) {
+                ship.hits.push('hit');
+                attacks.hits.push(cord);
+                console.log("pushuje hita");
+                if(ship.hits.filter((hit) => hit == 'hit').length >= ship.fields.length) {
+                    ship.fields.forEach((field) => {
+                        const number = attacks.hits.indexOf(field);
+                        attacks.hits.splice(number, number);
+                        attacks.destroyed.push(field);
+                    });
+                }
+                value = true;
+            } else {
+                attacks.missHits.push(cord);
+                console.log("pushuje missa");
+            }
+        });
+    });
+    return value;
 }
 
 import { setShips } from './setShips';
