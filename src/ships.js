@@ -42,16 +42,8 @@ function getType(ships, value) {
     }
 }
 
-export function placeShip(player, type, cords, ship, field) {
-    let playerKey;
-    if(player == 'player1') {
-        playerKey = GameStats.player1;
-        Player = playerKey;
-    } else {
-        playerKey = GameStats.player2;
-        Player = playerKey;
-    }
-    const ships = playerKey.ships;
+export function checkShip(player, cords) {
+    const ships = player.ships;
 
     let keys = [ships.fours, ships.threes, ships.twos, ships.ones];
     let good = keys.every((key) => {
@@ -91,19 +83,34 @@ export function placeShip(player, type, cords, ship, field) {
             });
         });
     });
+    console.log(good);
     if(!good) {
         console.log('nie wolno');
-        restoreShip(getActivePlayer(), type, ship);
-        return;
+        return false;
     }
-    let category = getType(ships, type);
+    
+}
 
-    category.push({
-        fields: cords,
-        hits: new Array(cords.length)
-    });
-    field.append(ship);
-    console.log(GameStats);
+export function placeShip(player, type, cords, ship, field) {
+    let playerKey;
+    if(player == 'player1') {
+        playerKey = GameStats.player1;
+        Player = playerKey;
+    } else {
+        playerKey = GameStats.player2;
+        Player = playerKey;
+    }
+    const ships = playerKey.ships;
+    if(checkShip(playerKey, cords) != false) {
+        let category = getType(ships, type);
+
+        category.push({
+            fields: cords,
+            hits: new Array(cords.length)
+        });
+        field.append(ship);
+        console.log(GameStats);
+    }
 }
 
 export function removeShip(ship) {

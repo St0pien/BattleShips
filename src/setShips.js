@@ -25,8 +25,7 @@ export function setShips() {
 
 var dragItem;
 
-import { removeShip } from './ships';
-import { placeShip } from './ships';
+import { removeShip, placeShip, checkShip } from './ships';
 import { getActivePlayer } from './setFields';
 
 function dragStart() {
@@ -61,7 +60,6 @@ export function changeRotation(ship) {
             }
         }
     }
-
     let changed = false;
     if(ship.parentNode.dataset.id != undefined) {
         removeShip(ship);
