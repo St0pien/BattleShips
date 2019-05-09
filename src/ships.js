@@ -114,7 +114,7 @@ export function placeShip(player, type, cords, ship, field) {
 
         category.push({
             fields: cords,
-            hits: new Array(cords.length)
+            hits: []
         });
         field.append(ship);
         console.log(GameStats);
@@ -170,8 +170,13 @@ export function drawShips(player) {
             const locations = ship.fields;
             locations.forEach((cord) => {
                 const field = map.querySelector(`.field[data-id="${cord.toString()}"]`);
-                
-                field.style.backgroundColor = "green";
+                if(ship.hits.length == ship.fields.length) {
+                    field.style.backgroundColor = "black";
+                } else if(ship.hits.indexOf(cord) > -1) {
+                    field.style.backgroundColor = "red";
+                } else {
+                    field.style.backgroundColor = "green";
+                }
             });
         })
     });
@@ -229,12 +234,15 @@ export function addShot(player, cord) {
             if(!value) {
                 const index = ship.fields.indexOf(cord);
                 if(index > -1) {
-                    ship.hits.push('hit');
+                    ship.hits.push(cord);
                     attacks.hits.push(cord);
-                    if(ship.hits.filter((hit) => hit == 'hit').length >= ship.fields.length) {
+                    if(ship.hits.length >= ship.fields.length) {
                         ship.fields.forEach((field) => {
                             attacks.destroyed.push(field);
-                        })
+                            if(types.every((type) => {return type.every((ship) => {return ship.hits.length >= ship.fields.length;});})) {
+                                won(player);
+                            }
+                        });
                     }
                     value = true;
                 }
@@ -246,6 +254,64 @@ export function addShot(player, cord) {
     }
     console.log(GameStats);
     return value;
+}
+
+function won(player) {
+    if(player == 'player1') {
+        var text = "PLAYER 1 WON!!!";
+    } else {
+        var text = "PLAYER 2 WON!!!";
+    }
+    const maps = document.querySelectorAll('.map');
+    maps.forEach((map) => map.style.display = 'none');
+    const missInfo = document.querySelector('.missInfo');
+    missInfo.style.display = 'block';
+    missInfo.innerHTML = text;
+    const button = document.querySelector('.button');
+    button.style.display = "";
+    button.innerHTML = "RESTART";
+    button.addEventListener('click', restart);
+    
+}
+
+function restart() {
+    GameStats = {
+        player1: {
+            ships: {
+                fours: [],
+                threes: [],
+                twos: [],
+                ones: []
+            },
+    
+            attacks: {
+                hits: [],
+                missHits: [],
+                destroyed: []
+            }
+        },
+        
+        player2: {
+            ships: {
+                fours: [],
+                threes: [],
+                twos: [],
+                ones: []
+            },
+    
+            attacks: {
+                hits: [],
+                missHits: [],
+                destroyed: []
+            }
+        }
+    }
+    const maps = [...document.querySelectorAll('.map')];
+    maps.forEach((map) => [...map.children].forEach((element) => element.parentNode.removeChild(element)));
+    maps[1].style.display = 'none';
+    document.querySelector('.ships').display = '';
+    setShips();
+    setFields();
 }
 
 import { setShips } from './setShips';
