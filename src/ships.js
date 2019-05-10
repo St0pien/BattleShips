@@ -332,5 +332,7 @@ export function restart() {
 
 import { setShips } from './setShips';
 import { setFields } from './setFields';
+import { startAnim } from './backgroundAnim';
+startAnim();
 setShips();
 setFields();
