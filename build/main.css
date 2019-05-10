@@ -1,0 +1,175 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    -webkit-user-select: none;        
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
+    color: #009c00;
+    font-family: 'Oswald', sans-serif;
+}
+
+.background {
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -10;
+    background-color: rgba(0, 0, 0, 0.6)
+}
+
+.backgroundScan {
+    position: fixed;
+    z-index: -11;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('img/scan.png');
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.backgroundScan::after {
+    content: '';
+    width: 20%;
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    box-shadow: 2vw 50px 100px 30px white;
+    transform: rotate(-13deg);
+}
+
+.backgroundScan::before {
+    content: '';
+    width: 10%;
+    position: absolute;
+    top: 65%;
+    left: 33%;
+    transform: rotate(-35deg);
+    box-shadow: 2vw 0 110px 30px white;
+}
+
+.backgroundIMG {
+    position: fixed;
+    z-index: -11;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('img/background_active.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+h1 {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 3rem;
+    text-shadow: 0 0 5px #009c00, 3px 3px 0 black;
+}
+
+.panels {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.ships {
+    margin: 5vh 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 50vh;
+}
+
+.ship {
+    background: rgb(37, 175, 37);
+    border: outset 3px rgb(37, 175, 37);
+    height: 40px;
+    transform-origin: 20px 20px;
+}
+
+.map {
+    margin-top: 5vh;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+@media(min-width: 1920px) {
+    .panels {
+        justify-content: center;
+    }
+
+    .ships {
+        margin-right: 10vw;
+    }
+    .map { 
+        margin-right: 10vw;
+    }
+}
+
+.map:last-child {
+    display: none;
+    margin-right: 0;
+}
+
+.map>h2 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -60px;
+}
+
+
+
+.field {
+    width: 40px;
+    height: 40px;
+    border: inset 2px #009c00;
+
+}
+
+.button {
+    margin: 2vh auto;
+    width: 30vw;
+    padding: 10px;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 10px;
+    text-shadow: 0 0 5px #009c00, 3px 3px 0 black;
+    font-family: 'Oswald', sans-serif;
+    background: transparent;
+    color: #00d400;
+    border: outset 8px #009c00;
+    cursor: pointer;
+}
+
+.buttonClicked {
+    border: inset 8px #009c00;
+    text-shadow: none;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+.missInfo {
+    font-size: 5rem;
+    position: fixed;
+    top: 50vh;
+    right: 50vw;
+    transform: translate(50%, -50%);
+    display: none;
+}
