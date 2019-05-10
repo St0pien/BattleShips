@@ -1,3 +1,4 @@
+import { restart } from './ships';
 export function setFields() {
     const maps = document.querySelectorAll('.map');
 
@@ -21,6 +22,7 @@ export function setFields() {
     });
 
     const button = document.querySelector('.button');
+    button.removeEventListener('click', restart);
     button.addEventListener('click', nextPlayer);
 }
 
@@ -92,7 +94,6 @@ function dragDrop() {
         for(let i=0; i<Number(type); i++) {
             if((Number(id)+i).toString().charAt(1) == '9' || (Number(id)+i) == 9 && (Number(id)+i+1).toString().charAt(1) == '0') {
                 if(i+1 != Number(type)) {
-                    console.log('nope');
                     restoreShip(activePlayer, type, ship);
                     return;
                 }

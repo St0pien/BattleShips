@@ -38,7 +38,6 @@ function getType(ships, value) {
         case '2': return ships.twos; break;
         case '3': return ships.threes; break;
         case '4': return ships.fours; break;
-        default: console.log("fatal error"); break;
     }
 }
 
@@ -91,9 +90,7 @@ export function checkShip(player, cords) {
             });
         });
     });
-    console.log(good);
     if(!good) {
-        console.log('nie wolno');
         return false;
     }
     
@@ -117,7 +114,6 @@ export function placeShip(player, type, cords, ship, field) {
             hits: []
         });
         field.append(ship);
-        console.log(GameStats);
     }
 }
 
@@ -184,7 +180,6 @@ export function drawShips(player) {
 
 import { shoot } from './gamePlay';
 export function drawShots(player) {
-    console.log(player);
     if(player == 'player1') {
         var shots = GameStats.player1.attacks;
     } else {
@@ -198,8 +193,6 @@ export function drawShots(player) {
     });
 
     const { hits, missHits, destroyed } = shots;
-    console.log(hits);
-    console.log(destroyed);
     hits.forEach((hit) => {
         const field = map.querySelector(`.field[data-id="${hit.toString()}"]`);
         field.style.backgroundColor = "red";
@@ -252,10 +245,10 @@ export function addShot(player, cord) {
     if(!value) {
         attacks.missHits.push(cord);
     }
-    console.log(GameStats);
     return value;
 }
 
+import { startTurn } from './gamePlay';
 function won(player) {
     if(player == 'player1') {
         var text = "PLAYER 1 WON!!!";
@@ -270,11 +263,13 @@ function won(player) {
     const button = document.querySelector('.button');
     button.style.display = "";
     button.innerHTML = "RESTART";
+    button.removeEventListener('click', startTurn);
     button.addEventListener('click', restart);
     
 }
 
-function restart() {
+import { changeRotation } from './setShips';
+export function restart() {
     GameStats = {
         player1: {
             ships: {
@@ -307,9 +302,30 @@ function restart() {
         }
     }
     const maps = [...document.querySelectorAll('.map')];
-    maps.forEach((map) => [...map.children].forEach((element) => element.parentNode.removeChild(element)));
+    maps[0].style.display = 'grid';
     maps[1].style.display = 'none';
-    document.querySelector('.ships').display = '';
+    const ships = document.querySelector('.ships');
+    ships.style.display = '';
+    document.querySelectorAll('.ship').forEach((element) => {
+        ships.appendChild(element);
+        if(element.dataset.rotation == 'vertical') {
+            changeRotation(element);
+        }
+        element.style.display = 'block';
+    });
+    maps.forEach((map) => [...map.children].forEach((element) => element.parentNode.removeChild(element)));
+    maps.forEach((map) => {
+        const header = document.createElement('h2');
+        header.innerHTML = "Place your ships";
+        map.append(header);
+});
+    const button = document.querySelector('.button');
+    const missInfo = document.querySelector('.missInfo');
+    missInfo.style.display = 'none';
+    missInfo.innerHTML = "YOU MISSED!";
+    button.style.display = 'block';
+    button.innerHTML = 'SET';
+    console.log("restarted");
     setShips();
     setFields();
 }

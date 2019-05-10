@@ -8,9 +8,9 @@ export function startGameplay() {
         element.style.display = "grid";
     });
     const shipsPanel = document.querySelector('.ships');
-    shipsPanel.parentNode.removeChild(shipsPanel);
+    shipsPanel.style.display = 'none';
     document.querySelectorAll('.ship').forEach((element) => {
-        element.parentNode.removeChild(element);
+        element.style.display = 'none';
     });
     const button = document.querySelector('.button');
     button.style.display = 'none';
@@ -31,7 +31,6 @@ export function startGameplay() {
 
 export function shoot() {
     if(addShot(activePlayer, Number(this.dataset.id))) {
-        console.log("nie wiem");
         drawShots(activePlayer);
     } else {
         if(activePlayer == 'player1') {
@@ -52,7 +51,7 @@ function changePlayer() {
     document.querySelector('.button').style.display = "";
 }
 
-function startTurn() {
+export function startTurn() {
     const maps = document.querySelectorAll('.map');
     maps.forEach((map) => map.style.display = 'grid');
     document.querySelector('.missInfo').style.display = 'none';

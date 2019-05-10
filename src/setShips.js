@@ -74,7 +74,6 @@ export function changeRotation(ship) {
         if(ship.dataset.rotation == "horizontal") {
             for(let i=0; i<type; i++) {
                 if(Number(id)+i*10 > 99) {
-                    console.log("błąd");
                     return;
                 }
                 cords.push(Number(id) + i*10);
