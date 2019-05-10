@@ -61,7 +61,7 @@ export function changeRotation(ship, save) {
         }
     }
     let changed = false;
-    if(ship.parentNode.dataset.id != undefined) {
+    if(ship.parentNode.dataset.id != undefined && save) {
         removeShip(ship);
         changed = true;
     }
