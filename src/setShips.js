@@ -40,10 +40,10 @@ function dragEnd() {
 }
 
 function onClick() {
-    changeRotation(this);
+    changeRotation(this, true);
 }
 
-export function changeRotation(ship) {
+export function changeRotation(ship, save) {
     if(ship.dataset.rotation == "horizontal") {
         const id = ship.parentNode.dataset.id;
         if(Number(id)+(Number(ship.dataset.fields)-1)*10 > 99) {
@@ -66,7 +66,7 @@ export function changeRotation(ship) {
         changed = true;
     }
 
-    if(changed) {
+    if(changed && save) {
         const type = ship.dataset.fields;
         let cords = [];
         const id = ship.parentNode.dataset.id;

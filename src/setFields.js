@@ -49,7 +49,7 @@ function nextPlayer() {
             });
             ships.forEach((ship) => {
                 if(ship.dataset.rotation == 'vertical') {
-                    changeRotation(ship);
+                    changeRotation(ship, false);
                 }
                 container.appendChild(ship);
             });

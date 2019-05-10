@@ -93,7 +93,6 @@ export function checkShip(player, cords) {
     if(!good) {
         return false;
     }
-    
 }
 
 export function placeShip(player, type, cords, ship, field) {
@@ -325,7 +324,6 @@ export function restart() {
     missInfo.innerHTML = "YOU MISSED!";
     button.style.display = 'block';
     button.innerHTML = 'SET';
-    console.log("restarted");
     setShips();
     setFields();
 }
