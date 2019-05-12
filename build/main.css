@@ -139,7 +139,6 @@ h1 {
     width: 40px;
     height: 40px;
     border: inset 2px #009c00;
-
 }
 
 .button {
@@ -169,7 +168,7 @@ h3 {
 .missInfo {
     font-size: 5rem;
     position: fixed;
-    top: 50vh;
+    top: 50%;
     right: 50vw;
     transform: translate(50%, -50%);
     display: none;
