@@ -94,6 +94,7 @@ h1 {
 }
 
 .ship {
+    flex: none;
     background: rgb(37, 175, 37);
     border: outset 3px rgb(37, 175, 37);
     height: 40px;
