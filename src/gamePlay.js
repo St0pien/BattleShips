@@ -1,9 +1,9 @@
 import { drawShips, drawShots, addShot } from './ships';
 
-var activePlayer = 'player1';
+var activePlayer = 'player2';
 
 export function startGameplay() {
-    document.querySelector('h3').innerHTML = "turn: PLAYER 1";
+    document.querySelector('h3').innerHTML = "turn: PLAYER 2";
     document.querySelectorAll('.map').forEach((element) => {
         element.style.display = "grid";
     });
